@@ -79,4 +79,26 @@ abstract class BaseItem implements ItemInterface
     {
         return $this->itemLifespan;
     }
+
+    public function nextDay(): static
+    {
+        // Note the order; it's important
+        $this->updateLifespan();
+        $this->updateQuality();
+
+        return $this;
+    }
+
+    /**
+     * Update the item lifespan in response to a passing day
+     */
+    protected function updateLifespan()
+    {
+        $this->itemLifespan -= 1;
+    }
+
+    /**
+     * Update the item quality in response to a passing day
+     */
+    abstract protected function updateQuality();
 }
