@@ -9,6 +9,18 @@ use App\ItemTypes\SimpleItem;
 use Faker\Factory;
 
 describe('SimpleItem', function () {
+    describe('initial quality', function () {
+        it('changes an initial quality greater than 50 to 50', function () {
+            $item = new SimpleItem('x', 51, 10);
+            expect($item->getQuality())->toBe(50);
+        });
+
+        it('changes an initial quality less than 0 to 0', function () {
+            $item = new SimpleItem('x', -1, 10);
+            expect($item->getQuality())->toBe(0);
+        });
+    });
+
     describe('nextDay', function () {
         describe('degrading quality', function () {
             it('reduces the quality by 1 unit per day', function () {

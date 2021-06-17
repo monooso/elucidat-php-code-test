@@ -13,7 +13,7 @@ final class EventItem extends BaseItem implements ItemInterface
 
         // Event items have no value once the event has passed
         if ($lifespan < 0) {
-            $this->itemQuality = 0;
+            $this->itemQuality = self::MIN_QUALITY;
             return;
         }
 
@@ -23,6 +23,6 @@ final class EventItem extends BaseItem implements ItemInterface
             default        => 3,
         };
 
-        $this->itemQuality = min(50, $quality + $change);
+        $this->itemQuality = $this->normalizeQuality($quality + $change);
     }
 }

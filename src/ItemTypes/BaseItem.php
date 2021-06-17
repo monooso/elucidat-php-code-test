@@ -8,6 +8,9 @@ use App\Exceptions\UnknownPropertyException;
 
 abstract class BaseItem implements ItemInterface
 {
+    public const MAX_QUALITY = 50;
+    public const MIN_QUALITY = 0;
+
     /**
      * The item name
      *
@@ -32,8 +35,6 @@ abstract class BaseItem implements ItemInterface
     /**
      * Construct a new item
      *
-     * @todo validate the given quality and sell-in properties
-     *
      * @param string $name
      * @param int    $quality
      * @param int    $sellIn
@@ -41,7 +42,7 @@ abstract class BaseItem implements ItemInterface
     public function __construct(string $name, int $quality, int $sellIn)
     {
         $this->itemName = $name;
-        $this->itemQuality = $quality;
+        $this->itemQuality = $this->normalizeQuality($quality);
         $this->itemLifespan = $sellIn;
     }
 
@@ -95,6 +96,18 @@ abstract class BaseItem implements ItemInterface
     protected function updateLifespan()
     {
         $this->itemLifespan -= 1;
+    }
+
+    /**
+     * Ensure the item quality score falls within acceptable bounds
+     *
+     * @param int $quality
+     *
+     * @return int
+     */
+    protected function normalizeQuality(int $quality): int
+    {
+        return max(static::MIN_QUALITY, min(static::MAX_QUALITY, $quality));
     }
 
     /**
