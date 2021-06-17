@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\ItemTypes\ItemInterface;
+
 class GildedRose
 {
     public function __construct(private array $items)
@@ -20,6 +22,11 @@ class GildedRose
     public function nextDay()
     {
         foreach ($this->items as $item) {
+            if ($item instanceof ItemInterface) {
+                $item->nextDay();
+                continue;
+            }
+
             if ($item->name != 'Aged Brie' and $item->name != 'Backstage passes to a TAFKAL80ETC concert') {
                 if ($item->quality > 0) {
                     if ($item->name != 'Sulfuras, Hand of Ragnaros') {
