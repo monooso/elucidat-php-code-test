@@ -28,7 +28,7 @@ describe('Gilded Rose', function () {
         it('throws an exception if the index is negative', function () {
             $rose = new GildedRose([]);
 
-            $closure = fn() => $rose->getItem(-1);
+            $closure = fn () => $rose->getItem(-1);
 
             expect($closure)->toThrow(new OutOfBoundsException());
         });
@@ -36,7 +36,7 @@ describe('Gilded Rose', function () {
         it('throws an exception if the index is beyond the end of the items array', function () {
             $rose = new GildedRose([new SimpleItem('a', 10, 20)]);
 
-            $closure = fn() => $rose->getItem(1);
+            $closure = fn () => $rose->getItem(1);
 
             expect($closure)->toThrow(new OutOfBoundsException());
         });

@@ -91,7 +91,7 @@ describe('SimpleItem', function () {
         });
 
         it('throws an exception for unknown properties', function () use ($item) {
-            $closure = fn() => $item->wibble;
+            $closure = fn () => $item->wibble;
             expect($closure)->toThrow(new UnknownPropertyException());
         });
     });

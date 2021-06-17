@@ -17,10 +17,10 @@ final class EventItem extends BaseItem implements ItemInterface
             return;
         }
 
-        $change = match(true) {
+        $change = match (true) {
             $lifespan > 10 => 1,
-            $lifespan > 5 => 2,
-            default => 3,
+            $lifespan > 5  => 2,
+            default        => 3,
         };
 
         $this->itemQuality = min(50, $quality + $change);
