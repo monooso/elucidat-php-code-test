@@ -3,13 +3,54 @@
 namespace Specs;
 
 use App\GildedRose;
-use App\Item;
 use App\ItemTypes\EventItem;
 use App\ItemTypes\LegendaryItem;
 use App\ItemTypes\SimpleItem;
 use App\ItemTypes\WellAgedItem;
+use OutOfBoundsException;
 
 describe('Gilded Rose', function () {
+    describe('getItem', function () {
+        it('returns all items if called without a key', function () {
+            $item = new SimpleItem('a', 10, 20);
+            $rose = new GildedRose([$item]);
+
+            expect($rose->getItem())->toEqual([$item]);
+        });
+
+        it('returns the item at the given key', function () {
+            $item = new SimpleItem('a', 10, 20);
+            $rose = new GildedRose([$item]);
+
+            expect($rose->getItem(0))->toEqual($item);
+        });
+
+        it('throws an exception if the index is negative', function () {
+            $rose = new GildedRose([]);
+
+            $closure = fn() => $rose->getItem(-1);
+
+            expect($closure)->toThrow(new OutOfBoundsException());
+        });
+
+        it('throws an exception if the index is beyond the end of the items array', function () {
+            $rose = new GildedRose([new SimpleItem('a', 10, 20)]);
+
+            $closure = fn() => $rose->getItem(1);
+
+            expect($closure)->toThrow(new OutOfBoundsException());
+        });
+    });
+
+    describe('getAllItems', function () {
+        it('returns all items', function () {
+            $item = new SimpleItem('a', 10, 20);
+            $rose = new GildedRose([$item]);
+
+            expect($rose->getItem())->toEqual([$item]);
+        });
+    });
+
     describe('next day', function () {
         context('normal Items', function () {
             it('updates normal items before sell date', function () {
