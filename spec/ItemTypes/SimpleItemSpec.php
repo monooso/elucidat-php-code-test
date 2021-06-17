@@ -37,6 +37,17 @@ describe('SimpleItem', function () {
                 expect($item->getQuality())->toBe(0);
             });
         });
+
+        describe('reducing lifespan', function () {
+            it('reduces the lifespan by 1 unit per day', function () {
+                $sellIn = 20;
+                $item = new SimpleItem('x', 100, $sellIn);
+
+                for ($count = 1; $count < 5; $count++) {
+                    expect($item->nextDay()->getSellIn())->toBe($sellIn - $count);
+                }
+            });
+        });
     });
 
     describe('property accessor methods', function () {

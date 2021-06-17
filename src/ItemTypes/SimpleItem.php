@@ -8,9 +8,19 @@ final class SimpleItem extends BaseItem implements ItemInterface
 {
     public function nextDay(): ItemInterface
     {
+        // Note the order; it's important
+        $this->updateLifespan();
         $this->updateQuality();
 
         return $this;
+    }
+
+    /**
+     * Update the item lifespan in response to a passing day
+     */
+    private function updateLifespan()
+    {
+        $this->itemLifespan -= 1;
     }
 
     /**
