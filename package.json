@@ -1,0 +1,10 @@
+{
+    "private": true,
+    "scripts": {
+        "lint-fix": "php ./tools/vendor/bin/php-cs-fixer fix --config .php_cs"
+    },
+    "devDependencies": {
+        "husky": "^6.0.0",
+        "lint-staged": "^11.0.0"
+    }
+}
