@@ -8,10 +8,8 @@ final class SimpleItem extends BaseItem implements ItemInterface
 {
     protected function updateQuality()
     {
-        if ($this->itemQuality === 0) {
-            return;
-        }
+        $change = $this->itemLifespan >= 0 ? 1 : 2;
 
-        $this->itemQuality -= ($this->itemLifespan >= 0 ? 1 : 2);
+        $this->itemQuality = $this->normalizeQuality($this->itemQuality - $change);
     }
 }
