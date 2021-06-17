@@ -1,4 +1,8 @@
 {
+    "name": "monooso/elucidate-php-code-test",
+    "type": "project",
+    "description": "Solution to the Elucidate PHP code test",
+    "license": "proprietary",
     "require": {
         "php": "~8.0"
     },
