@@ -1,7 +1,7 @@
 <?php
 
-use App\Item;
 use App\GildedRose;
+use App\Item;
 
 describe('Gilded Rose', function () {
     describe('next day', function () {
