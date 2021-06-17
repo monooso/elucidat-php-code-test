@@ -1,4 +1,5 @@
 # The Elucidat 'Gilded Rose' Coding Test
+[![lint-and-test](https://github.com/monooso/elucidat-php-code-test/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/monooso/elucidat-php-code-test/actions/workflows/lint-and-test.yml)
 
 ## The task
 
