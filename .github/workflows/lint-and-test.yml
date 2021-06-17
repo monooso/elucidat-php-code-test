@@ -1,0 +1,41 @@
+name: lint-and-test
+
+on:
+  pull_request:
+    branches: ["*"]
+  push:
+    branches: ["master"]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install application dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Install tooling dependencies
+        run: cd tools && composer install --prefer-dist --no-progress
+
+      - name: Copy PHP CS Fixer configuration file
+        run: cp .php_cs.dist .php_cs
+
+      - name: Lint code
+        run: php ./tools/vendor/bin/php-cs-fixer fix --dry-run --config .php_cs
+
+      - name: Run test suite
+        run: ./vendor/bin/kahlan
