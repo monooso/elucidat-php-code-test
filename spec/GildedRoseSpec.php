@@ -1,5 +1,7 @@
 <?php
 
+namespace Specs;
+
 use App\GildedRose;
 use App\Item;
 
