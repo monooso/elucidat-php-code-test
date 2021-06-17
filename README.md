@@ -14,21 +14,11 @@ Please follow the specifications below, refactoring as you see fit.  However, pl
 - You only need to spend an hour or two on this
 
 ## Getting started
-
-Run:
-
-```
-composer update
-```
-
-to install the testing framework (we're using [Kahlan library](http://kahlan.readthedocs.org/en/latest/) here as it has a very easy-to-understand spec perfect for this small exercise), and to run the tests use:
-
-```
-./vendor/bin/kahlan
-```
+1. Clone the repository: `git clone git@github.com:monooso/elucidat-php-code-test.git`
+2. Run the setup script: `bash scripts/setup.sh`
+3. Run the test suite (written with [Kahlan](https://kahlan.github.io/docs/)) to confirm everything is working correctly: `./vendor/bin/kahlan`
 
 ## Specifications
-
 Hi and welcome to team Gilded Rose. As you know, we are a small inn with a prime location in a
 prominent city ran by a friendly innkeeper named Allison. We also buy and sell only the finest goods.
 
