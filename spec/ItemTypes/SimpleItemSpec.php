@@ -21,6 +21,35 @@ describe('SimpleItem', function () {
         });
     });
 
+    describe('instance properties', function () {
+        beforeEach(function () {
+            $faker = Factory::create();
+
+            $this->name = $faker->name();
+            $this->quality = $faker->numberBetween(1, 50);
+            $this->sellIn = $faker->numberBetween(1, 50);
+
+            $this->item = new SimpleItem($this->name, $this->quality, $this->sellIn);
+        });
+
+        it('it supports property accessor methods', function () {
+            expect($this->item->getName())->toBe($this->name);
+            expect($this->item->getQuality())->toBe($this->quality);
+            expect($this->item->getSellIn())->toBe($this->sellIn);
+        });
+
+        it('supports magic accessors', function () {
+            expect($this->item->name)->toBe($this->name);
+            expect($this->item->quality)->toBe($this->quality);
+            expect($this->item->sellIn)->toBe($this->sellIn);
+        });
+
+        it('throws an exception for unknown properties', function () {
+            $closure = fn () => $this->item->wibble;
+            expect($closure)->toThrow(new UnknownPropertyException());
+        });
+    });
+
     describe('nextDay', function () {
         describe('degrading quality', function () {
             it('reduces the quality by 1 unit per day', function () {
@@ -59,52 +88,6 @@ describe('SimpleItem', function () {
                     expect($item->nextDay()->getSellIn())->toBe($sellIn - $count);
                 }
             });
-        });
-    });
-
-    describe('property accessor methods', function () {
-        // We could move this to beforeEach, but `use` is a bit clearer.
-        $faker = Factory::create();
-        $name = $faker->name();
-        $quality = $faker->numberBetween(1, 50);
-        $sellIn = $faker->numberBetween(1, 50);
-        $item = new SimpleItem($name, $quality, $sellIn);
-
-        it('returns the item name', function () use ($item, $name) {
-            expect($item->getName())->toBe($name);
-        });
-
-        it('returns the item quality', function () use ($item, $quality) {
-            expect($item->getQuality())->toBe($quality);
-        });
-
-        it('returns the item sell-in', function () use ($item, $sellIn) {
-            expect($item->getSellIn())->toBe($sellIn);
-        });
-    });
-
-    describe('magic properties', function () {
-        $faker = Factory::create();
-        $name = $faker->name();
-        $quality = $faker->numberBetween(1, 50);
-        $sellIn = $faker->numberBetween(1, 50);
-        $item = new SimpleItem($name, $quality, $sellIn);
-
-        it('returns the item name', function () use ($item, $name) {
-            expect($item->name)->toBe($name);
-        });
-
-        it('returns the item quality', function () use ($item, $quality) {
-            expect($item->quality)->toBe($quality);
-        });
-
-        it('returns the item sell-in', function () use ($item, $sellIn) {
-            expect($item->sellIn)->toBe($sellIn);
-        });
-
-        it('throws an exception for unknown properties', function () use ($item) {
-            $closure = fn () => $item->wibble;
-            expect($closure)->toThrow(new UnknownPropertyException());
         });
     });
 });

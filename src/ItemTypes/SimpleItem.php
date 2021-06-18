@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\ItemTypes;
 
+use App\Contracts\ItemInterface;
+use App\Traits\HasDecreasingLifespan;
+
 final class SimpleItem extends BaseItem implements ItemInterface
 {
-    protected function updateQuality()
-    {
-        $change = $this->itemLifespan >= 0 ? 1 : 2;
+    use HasDecreasingLifespan;
 
-        $this->itemQuality = $this->normalizeQuality($this->itemQuality - $change);
+    protected function calculateQuality(int $quality, int $lifespan): int
+    {
+        $quality -= ($lifespan < 0 ? 2 : 1);
+
+        return $this->normalizeQuality($quality, self::MIN_QUALITY, self::MAX_QUALITY);
     }
 }

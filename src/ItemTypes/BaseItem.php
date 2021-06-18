@@ -4,33 +4,25 @@ declare(strict_types=1);
 
 namespace App\ItemTypes;
 
-use App\Exceptions\UnknownPropertyException;
+use App\Contracts\ItemInterface;
+use App\Traits\HasDecreasingLifespan;
+use App\Traits\HasItemLifespan;
+use App\Traits\HasItemName;
+use App\Traits\HasItemQuality;
+use App\Traits\HasMagicAccessors;
+use App\Traits\NormalizesQuality;
 
 abstract class BaseItem implements ItemInterface
 {
-    public const MAX_QUALITY = 50;
-    public const MIN_QUALITY = 0;
+    use HasDecreasingLifespan;
+    use HasItemLifespan;
+    use HasItemName;
+    use HasItemQuality;
+    use HasMagicAccessors;
+    use NormalizesQuality;
 
-    /**
-     * The item name
-     *
-     * @var string $itemName
-     */
-    protected string $itemName;
-
-    /**
-     * The item quality score
-     *
-     * @var int $itemQuality
-     */
-    protected int $itemQuality;
-
-    /**
-     * The number of days until the item's "sell-by" date
-     *
-     * @var int $itemLifespan
-     */
-    protected int $itemLifespan;
+    protected const MIN_QUALITY = 0;
+    protected const MAX_QUALITY = 50;
 
     /**
      * Construct a new item
@@ -42,76 +34,32 @@ abstract class BaseItem implements ItemInterface
     public function __construct(string $name, int $quality, int $sellIn)
     {
         $this->itemName = $name;
-        $this->itemQuality = $this->normalizeQuality($quality);
+        $this->itemQuality = $this->normalizeQuality($quality, static::MIN_QUALITY, static::MAX_QUALITY);
         $this->itemLifespan = $sellIn;
-    }
-
-    /**
-     * Provide property-style access to the protected class attributes
-     *
-     * Mostly a convenience layer, to preserve compatibility with existing code.
-     *
-     * @param string $name
-     *
-     * @return int|string
-     */
-    public function __get(string $name): int | string
-    {
-        $method = 'get' . ucfirst($name);
-
-        if (method_exists($this, $method)) {
-            return $this->$method();
-        }
-
-        throw new UnknownPropertyException("Unknown property $name");
-    }
-
-    public function getName(): string
-    {
-        return $this->itemName;
-    }
-
-    public function getQuality(): int
-    {
-        return $this->itemQuality;
-    }
-
-    public function getSellIn(): int
-    {
-        return $this->itemLifespan;
     }
 
     public function nextDay(): ItemInterface
     {
-        // Note the order; it's important
-        $this->updateLifespan();
-        $this->updateQuality();
+        $lifespan = $this->itemLifespan;
+        $quality = $this->itemQuality;
+
+        // Order is important
+        $lifespan = $this->updateLifespan($lifespan);
+        $quality = $this->calculateQuality($quality, $lifespan);
+
+        $this->itemLifespan = $lifespan;
+        $this->itemQuality = $quality;
 
         return $this;
     }
 
     /**
-     * Update the item lifespan in response to a passing day
-     */
-    protected function updateLifespan()
-    {
-        $this->itemLifespan -= 1;
-    }
-
-    /**
-     * Ensure the item quality score falls within acceptable bounds
+     * Calculate the new item quality
      *
      * @param int $quality
+     * @param int $lifespan
      *
      * @return int
      */
-    protected function normalizeQuality(int $quality): int
-    {
-        return max(static::MIN_QUALITY, min(static::MAX_QUALITY, $quality));
-    }
-
-    /**
-     * Update the item quality in response to a passing day
-     */
-    abstract protected function updateQuality();
+    abstract protected function calculateQuality(int $quality, int $lifespan): int;
 }

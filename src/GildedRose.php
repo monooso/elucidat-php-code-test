@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\ItemTypes\ItemInterface;
+use App\Contracts\ItemInterface;
 use OutOfBoundsException;
 
 final class GildedRose

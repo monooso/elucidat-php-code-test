@@ -7,6 +7,18 @@ namespace Specs\ItemTypes;
 use App\ItemTypes\WellAgedItem;
 
 describe('WellAgedItem', function () {
+    describe('initial quality', function () {
+        it('changes an initial quality greater than 50 to 50', function () {
+            $item = new WellAgedItem('x', 51, 10);
+            expect($item->getQuality())->toBe(50);
+        });
+
+        it('changes an initial quality less than 0 to 0', function () {
+            $item = new WellAgedItem('x', -1, 10);
+            expect($item->getQuality())->toBe(0);
+        });
+    });
+
     describe('nextDay', function () {
         describe('increasing quality', function () {
             it('increases the quality by 1 when the lifespan is more than 0', function () {

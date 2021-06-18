@@ -4,25 +4,19 @@ declare(strict_types=1);
 
 namespace App\ItemTypes;
 
+use App\Contracts\ItemInterface;
+
 final class EventItem extends BaseItem implements ItemInterface
 {
-    protected function updateQuality()
+    protected function calculateQuality(int $quality, int $lifespan): int
     {
-        $lifespan = $this->itemLifespan;
-        $quality = $this->itemQuality;
-
-        // Event items have no value once the event has passed
-        if ($lifespan < 0) {
-            $this->itemQuality = self::MIN_QUALITY;
-            return;
-        }
-
-        $change = match (true) {
-            $lifespan > 10 => 1,
-            $lifespan > 5  => 2,
-            default        => 3,
+        $quality = match (true) {
+            $lifespan > 10 => $quality + 1,
+            $lifespan > 5  => $quality + 2,
+            $lifespan >=0  => $quality + 3,
+            default        => self::MIN_QUALITY,    // No value after event
         };
 
-        $this->itemQuality = $this->normalizeQuality($quality + $change);
+        return $this->normalizeQuality($quality, self::MIN_QUALITY, self::MAX_QUALITY);
     }
 }
