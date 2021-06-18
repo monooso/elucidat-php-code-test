@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Specs\ItemTypes;
 
-use App\Exceptions\UnknownPropertyException;
 use App\ItemTypes\ConjuredItem;
-use Faker\Factory;
 
 describe('ConjuredItem', function () {
     describe('initial quality', function () {

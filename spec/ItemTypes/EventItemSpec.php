@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Specs\ItemTypes;
 
-use App\Exceptions\UnknownPropertyException;
 use App\ItemTypes\EventItem;
-use App\Traits\HasMagicAccessors;
-use Faker\Factory;
 
 describe('EventItem', function () {
     describe('initial quality', function () {

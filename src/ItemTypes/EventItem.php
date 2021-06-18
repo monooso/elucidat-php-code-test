@@ -13,7 +13,7 @@ final class EventItem extends BaseItem implements ItemInterface
         $quality = match (true) {
             $lifespan > 10 => $quality + 1,
             $lifespan > 5  => $quality + 2,
-            $lifespan >=0  => $quality + 3,
+            $lifespan >= 0 => $quality + 3,
             default        => self::MIN_QUALITY,    // No value after event
         };
 
