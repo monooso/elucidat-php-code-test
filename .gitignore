@@ -1,5 +1,4 @@
 # Environment-specific
-.husky
 .php_cs
 .php_cs.cache
 
