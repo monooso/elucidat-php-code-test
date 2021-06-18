@@ -1,8 +1,27 @@
 # The Elucidat 'Gilded Rose' Coding Test
 [![lint-and-test](https://github.com/monooso/elucidat-php-code-test/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/monooso/elucidat-php-code-test/actions/workflows/lint-and-test.yml)
 
-## The task
+## Solution notes
+The solution replaces the existing conditionals with polymorphism. Each item type class has a common interface (`App\Contracts\ItemInterface`), and encapsulates the business logic for that type.
 
+### Ambiguities
+The existing code performed some quality score calculations _before_ updating the item lifespan, and others _after_ updating the item lifespan. This led to some apparently inconsistent behaviour.
+
+Under normal circumstances, I would have discussed the requirements with a domain expert. As that wasn't an option here, [I opted for consistency][fixed-commit].
+
+[fixed-commit]: https://github.com/monooso/elucidat-php-code-test/commit/fa9cb7de03876df5d6168106a726752b4bf822be
+
+### Tooling
+- [PHP CS Fixer][php-cs-fixer] enforces coding style.
+- [Husky][husky] automatically tests and lints code before commit and push.
+- [GitHub Actions][gh-actions] keep the repository pristine.
+- A bash script simplifies set-up. See the revised "Getting started" section for details.
+
+ [gh-actions]: https://github.com/features/actions
+ [husky]: https://typicode.github.io/husky/#/
+ [php-cs-fixer]: https://github.com/FriendsOfPHP/PHP-CS-Fixer
+
+## The task
 This repository includes the initial setup for a Gilded Rose kata.  It includes everything you need to get up and running, including a large suite of tests.  The purpose of this task is to put you in the position of having some old, ugly, legacy code and seeing whay you could do with it, all of the while making any of your changes test-driven and ensuring everything continues to pass the tests (or any more tests you would write). 
 
 Please follow the specifications below, refactoring as you see fit.  However, please keep the following in mind:
